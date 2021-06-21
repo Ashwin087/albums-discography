@@ -34,11 +34,11 @@ function App() {
       })
 
       // Function to change "explicit" to parental advisory warning
-      apiRes.map( (explicitWarning) => {
-        const explicitPath = explicitWarning.collectionExplicitness;
-        const advisory = require('./assets/advisory.png')
-        console.log(advisory);
-      })
+      // apiRes.map( (explicitWarning) => {
+      //   const explicitPath = explicitWarning.collectionExplicitness;
+      //   const advisory = require('./assets/advisory.png')
+      //   console.log(advisory);
+      // })
 
       // If results found, set/fill the empty array of "album" with objects returned from api
       // If results not found, alert user to try again. 
