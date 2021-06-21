@@ -30,15 +30,15 @@ function App() {
       apiRes.map( (albumCover) => {
         const smallArt = albumCover.artworkUrl100;
         const largeArt = smallArt.replace("100x100bb.jpg", "600x600bb.jpg");
-        albumCover.artworkUrl100 = largeArt;
+        return albumCover.artworkUrl100 = largeArt;
       })
 
       // Function to change "explicit" to parental advisory warning
-      apiRes.map( (explicitWarning) => {
-        const explicitPath = explicitWarning.collectionExplicitness;
-        const advisory = require('./assets/advisory.png')
-        console.log(advisory);
-      })
+      // apiRes.map( (explicitWarning) => {
+      //   const explicitPath = explicitWarning.collectionExplicitness;
+      //   const advisory = require('./assets/advisory.png')
+      //   console.log(advisory);
+      // })
 
       // If results found, set/fill the empty array of "album" with objects returned from api
       // If results not found, alert user to try again. 
