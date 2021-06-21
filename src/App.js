@@ -30,7 +30,7 @@ function App() {
       apiRes.map( (albumCover) => {
         const smallArt = albumCover.artworkUrl100;
         const largeArt = smallArt.replace("100x100bb.jpg", "600x600bb.jpg");
-        albumCover.artworkUrl100 = largeArt;
+        return albumCover.artworkUrl100 = largeArt;
       })
 
       // Function to change "explicit" to parental advisory warning
