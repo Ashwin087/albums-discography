@@ -9,6 +9,7 @@ html { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: 
 
 .sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; border: 0; padding: 0; white-space: nowrap; clip-path: inset(100%); clip: rect(0 0 0 0); overflow: hidden;}
 
+@import url('https://fonts.googleapis.com/css?family=Anton');
 
 /* Setting & Removing Defaults */
 html {
@@ -29,6 +30,7 @@ a {
   padding: 0;
   text-decoration: none;
   color: #000000;
+  font-family: 'Cardo', serif;
 }
 
 img {
@@ -61,7 +63,7 @@ img {
 
 /* Header and Form */
 header {
-  height: 25vh;
+  height: 35vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -105,8 +107,8 @@ ul {
     "art album artist"
     "art album artist"
     "art year track"
-    "art itunes explicit"
-    "art itunes explicit";
+    "art itunes favorite"
+    "art itunes favorite";
   gap: 1.25rem;
   text-align: left;
   width: 100%;
@@ -160,10 +162,11 @@ ul {
     margin: auto 0;
 }
 
-.explicitAlbum {
+.favorite {
   font-size: 1.4rem;
-  grid-area: explicit;
+  grid-area: favorite;
   margin: auto 0;
+  width: 65%;
 }
 
 .appleMusic {
@@ -178,6 +181,104 @@ footer {
   opacity: 0.5;
 }
 
+/* Favorites */
+.hidden {
+  display: none;
+}
+
+.favButton{
+  background-color: lightgray;
+  border-radius: 50px;
+  width: 10%;
+  line-height: 40px;
+  display: block;
+}
+
+.fa-w-11,
+.fa-star {
+  cursor: pointer;
+}
+
+.cartRemove.fa-w-11 {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  border-radius: 50px;
+  width: 50px;
+}
+
+.fa-w-11:hover,
+.fa-w-11:focus,
+.favButton:hover,
+.favButton:focus{
+  cursor: pointer;
+  border-radius: 50px;
+}
+
+.cartRemove{
+  display: flex;
+  justify-content: space-around;
+}
+
+.favCart {
+  background-color: lightgray;
+  position: fixed;
+  z-index: 20;
+  top: 0;
+  right: 0;
+  max-height: 100vh;
+  transition: all 0.5s;
+  overflow: scroll;
+  margin: 0;
+  display: block;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.favCart::-webkit-scrollbar { 
+    display: none;  
+}
+
+.favLi {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 0.8fr 0.2fr;
+  grid-template-areas: 
+  "img img"
+  "album trash"
+}
+
+.favImg {
+  grid-area: img;
+}
+
+.favAlbum {
+  grid-area: album;
+  font-size: 1rem;
+  margin: auto 0;
+  max-width: 265px;
+  text-align: left;
+  padding-left: 12px;
+}
+
+.favRemove {
+  grid-area: trash;
+  margin: auto 0;
+  padding-right: 10px;
+}
+
+.svg-inline--fa {
+  font-size: 1.75rem;
+  margin: auto 0;
+}
+
+
+
+
+
+
+
+
 /* Media Query */
 @media (max-width: 1150px) {
   .nameAlbum{
@@ -187,12 +288,10 @@ footer {
   .tracksAlbum,
   .yearAlbum,
   .artistAlbum,
-  .explicitAlbum,
+  .favorite,
   .appleMusic {
     font-size: 1.2rem;
   }
-
-
 }
 
 @media (max-width: 800px) {
@@ -212,7 +311,7 @@ footer {
   .tracksAlbum,
   .yearAlbum,
   .artistAlbum,
-  .explicitAlbum,
+  .favorite,
   .appleMusic {
     font-size: 0.92rem;
   }
@@ -237,9 +336,8 @@ footer {
     max-height: 500px;
   }
 
-  .explicitAlbum,
   .tracksAlbum, 
-  .explicitAlbum {
+  .favorite {
     display: none;
   }
 
