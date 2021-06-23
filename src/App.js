@@ -1,12 +1,23 @@
 import './App.css';
-import { useState } from 'react';
-import axios from 'axios';
+import { useState, useEffect } from 'react';
+
+import Header from './Header';
 import MusicInfo from './MusicInfo';
+import FBFavs from './FBFavs';
+
+import axios from 'axios';
+import firebase from "./firebase";
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTimes } from '@fortawesome/free-solid-svg-icons'
 
 function App() {
-
   const [album, setAlbum] = useState([]);
   const [searchInput, setSearchInput] = useState([]);
+  const [favorites, setFavorites] = useState([]);
+  const [isActive, setActive] = useState("false");
+
+  const removeButton = <FontAwesomeIcon icon={faTimes} /> 
 
   // Forwent useEffect since function will be triggered by form submission
   const getData = (event) => {
@@ -24,7 +35,7 @@ function App() {
     }).then(returnedData => {
       // Storing path to array of objects containing album information
       const apiRes = returnedData.data.results;
-      console.log(apiRes);
+      // console.log(apiRes);
 
       // Function to change returned 100x100 image to 600x600
       apiRes.map( (albumCover) => {
@@ -32,45 +43,95 @@ function App() {
         const largeArt = smallArt.replace("100x100bb.jpg", "600x600bb.jpg");
         return albumCover.artworkUrl100 = largeArt;
       })
-
-      // Function to change "explicit" to parental advisory warning
-      // apiRes.map( (explicitWarning) => {
-      //   const explicitPath = explicitWarning.collectionExplicitness;
-      //   const advisory = require('./assets/advisory.png')
-      //   console.log(advisory);
-      // })
-
+  
       // If results found, set/fill the empty array of "album" with objects returned from api
       // If results not found, alert user to try again. 
-      apiRes.length !== 0 ? setAlbum(apiRes) : alert(`No results found for "${searchInput}", please try again.`);
+      apiRes.length !== 0 ? 
+        setAlbum(apiRes) : 
+        alert(`No results found for "${searchInput}", please try again.`);
     })
   }
 
   // function that will set searchInput to user's search term
   const handleChange = (event) => {
-    console.log(event.target.value);
     setSearchInput(event.target.value);
   }
 
+  // const dbRef = firebase.database().ref();
+  // function that will add album artwork to favorites
+  const handleFirebase = (index) => {
+    const dbRef = firebase.database().ref();
+    dbRef.push({
+      art: album[index].artworkUrl100,
+      artist: album[index].artistName,
+      album: album[index].collectionName,
+    });
+  }
+
+  // Function to remove from FB
+  const removeFirebase = (albumObject) => {
+    const dbRef = firebase.database().ref();
+    dbRef.child(albumObject).remove();
+  }
+
+  // Toggle Visibility
+  const handleToggle  = () => {
+    console.log(isActive);
+    setActive(!isActive);
+  }
+
+  useEffect( () => {
+    const dbRef = firebase.database().ref();
+    dbRef.on('value', (response) => {
+      const pseudoFavorites = []
+      // Object with key-value of saved items
+      const data = response.val();
+      // console.log(data);
+
+      // gives separate key and album url value
+      for (let key in data) {
+        pseudoFavorites.push({key: key, fbInfo: data[key]})
+        // console.log(pseudoFavorites);
+      }
+      setFavorites(pseudoFavorites);
+    })
+  }, []) 
+
+
   return (
     <div className="App">
-      <header className="wrapper"> 
-        <h1>Artist Discography</h1>
-        <h2 className="pageInfo">Search by Artist to Find All Their Work!</h2>
-        {/* onSubmit, run function to make API call based on user input */}
-        <form onSubmit={getData}>
-          {/* sets value or searchInput to be user input by running handleChange function */}
-          <label htmlFor="userSearch" className="sr-only">Search</label>
-          <input type="text" name="userSearch" id="userSearch" placeholder="Search by Artist" onChange={handleChange}/>
-          <button type="submit">Search</button>
-        </form>
-      </header>
+      <Header 
+        getDataFunction={getData}
+        handleChangeFunction={handleChange}
+        cartOfFav ={favorites.length}
+        handleToggle ={handleToggle}
+      />
 
       <main className="wrapper">
+
+        <ul className={isActive ? "favCart" : "hidden"}>
+          <h2 onClick={handleToggle} className="cartRemove">Your Favorites! {removeButton}</h2>
+        {
+          favorites.map((favorite, index) => {
+            // console.log(favorite.key);
+            return (
+              <FBFavs 
+                artFromFB={favorite.fbInfo.art}
+                artistFromFB={favorite.fbInfo.artist}
+                albumFromFB={favorite.fbInfo.album}
+                keyFromFB={favorite.key}
+                removeFB={removeFirebase}
+                key={favorite.key+index}
+              />
+            )
+          })
+        }
+        </ul>
+
         <ul>
         {
           // Mapping through each object in album
-          album.map((albumInfo) => {
+          album.map((albumInfo, index) => {
             return (
               // Calling the "Albums" component. Passing in relevant information to display on page
               <MusicInfo 
@@ -81,8 +142,9 @@ function App() {
               tracks={albumInfo.trackCount}
               artistURL={albumInfo.artistViewUrl}
               appleMusic={albumInfo.collectionViewUrl}
-              explicit={albumInfo.collectionExplicitness}
-              key={albumInfo.collectionId}
+              indexNumber = {index}
+              indexFunction = {handleFirebase}
+              key={albumInfo.collectionId+index}
               />
               );
             })}
