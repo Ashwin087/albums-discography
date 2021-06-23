@@ -90,6 +90,21 @@ input[type=text]::placeholder {
   opacity: 0.7;
 }
 
+header button {
+  margin-top: 10px;
+  border-radius: 50px;
+  padding: 6px;
+  width: 12%;
+  min-width: 85px;
+  cursor: pointer;
+}
+
+/* Excluded focus. Button color will not return to original otherwise */
+header button:hover {
+  background-color: darkgrey;
+  color: white;
+}
+
 
 /* Ul & Li */
 ul {
@@ -97,6 +112,10 @@ ul {
   display: flex;
   flex-direction: column;
   padding: 0;
+}
+
+span {
+  padding: 0 10px;
 }
 
 .albumContainer {
@@ -128,7 +147,7 @@ ul {
   -webkit-box-shadow: 0px 0px 10px 10px rgba(212,212,212,0.9);
   -moz-box-shadow: 0px 0px 10px 10px rgba(212,212,212,0.9);
   opacity: 1;
-  transition: ease-in 0.45s;
+  transition: 0.85s;
 }
 
 .artAlbum{
@@ -139,7 +158,7 @@ ul {
 }
 
 .nameAlbum{
-    font-size: 1.7rem;
+    font-size: 1.55rem;
     grid-area: album;
     margin: auto 0;
 }
@@ -166,13 +185,21 @@ ul {
   font-size: 1.4rem;
   grid-area: favorite;
   margin: auto 0;
-  width: 65%;
 }
 
 .appleMusic {
   font-size: 1.4rem;
   grid-area: itunes;
   margin: auto 0;
+}
+
+.svg-inline--fa.fa-times.fa-w-11, 
+.svg-inline--fa.fa-star.fa-w-18 { 
+  font-size: 1.5rem;
+} 
+
+.svg-inline--fa.fa-apple.fa-w-12{
+  font-size: 1.8rem;
 }
 
 footer {
@@ -187,11 +214,17 @@ footer {
 }
 
 .favButton{
-  background-color: lightgray;
+  background-color: rgb(235, 235, 235);
   border-radius: 50px;
   width: 10%;
   line-height: 40px;
   display: block;
+  min-width: 90px;  
+}
+
+.favButton:focus,
+.favButton:hover{
+  background-color: rgb(122, 122, 122);
 }
 
 .fa-w-11,
@@ -199,12 +232,17 @@ footer {
   cursor: pointer;
 }
 
-.cartRemove.fa-w-11 {
+.cartRemove .svg-inline--fa.fa-times.fa-w-11  {
   position: absolute;
   top: 20px;
   right: 20px;
-  border-radius: 50px;
-  width: 50px;
+  width: 40px;
+}
+
+.cartRemove .svg-inline--fa.fa-times.fa-w-11:focus,
+.cartRemove .svg-inline--fa.fa-times.fa-w-11:hover {
+  background-color: white;
+  border-radius: 100%;
 }
 
 .fa-w-11:hover,
@@ -218,6 +256,7 @@ footer {
 .cartRemove{
   display: flex;
   justify-content: space-around;
+  padding-left: 10px;
 }
 
 .favCart {
@@ -248,6 +287,15 @@ footer {
   "album trash"
 }
 
+.favLi .svg-inline--fa.fa-times.fa-w-11 {
+  width: 35px;
+  border-radius: 100%;
+}
+
+.favLi .svg-inline--fa.fa-times.fa-w-11:hover {
+  background-color: white;
+} 
+
 .favImg {
   grid-area: img;
 }
@@ -275,14 +323,10 @@ footer {
 
 
 
-
-
-
-
 /* Media Query */
 @media (max-width: 1150px) {
   .nameAlbum{
-    font-size: 1.5rem;
+    font-size: 1.4rem;
   }
 
   .tracksAlbum,
@@ -315,6 +359,19 @@ footer {
   .appleMusic {
     font-size: 0.92rem;
   }
+
+  .favLi {
+    grid-template-rows: 5fr 1fr;
+  }
+
+  .svg-inline--fa.fa-times.fa-w-11, 
+  .svg-inline--fa.fa-star.fa-w-18 { 
+    font-size: 1.25rem;
+  } 
+
+  .svg-inline--fa.fa-apple.fa-w-12{
+    font-size: 1.4rem;
+  }
 }
 
 @media (max-width: 555px) {
@@ -324,11 +381,15 @@ footer {
     grid-template-areas: 
     "art"
     "album"
-    "artist"
     "year"
-    "itunes";
+    "itunes"
+    "favorite";
     max-height: none;
     padding-bottom: 1rem;
+  }
+
+  header {
+    height: 50vh;
   }
 
   img {
@@ -336,8 +397,17 @@ footer {
     max-height: 500px;
   }
 
+  .favButton {
+    width: 25%;
+  }
+
+  .favLi img {
+    max-width: 300px;
+    max-height: 300px;
+  }
+
   .tracksAlbum, 
-  .favorite {
+  .artistAlbum {
     display: none;
   }
 
