@@ -15,7 +15,7 @@ function App() {
   const [album, setAlbum] = useState([]);
   const [searchInput, setSearchInput] = useState([]);
   const [favorites, setFavorites] = useState([]);
-  const [isActive, setActive] = useState("false");
+  const [isActive, setActive] = useState(false);
 
   const removeButton = <FontAwesomeIcon icon={faTimes} /> 
 
@@ -35,7 +35,6 @@ function App() {
     }).then(returnedData => {
       // Storing path to array of objects containing album information
       const apiRes = returnedData.data.results;
-      // console.log(apiRes);
 
       // Function to change returned 100x100 image to 600x600
       apiRes.map( (albumCover) => {
@@ -76,7 +75,6 @@ function App() {
 
   // Toggle Visibility
   const handleToggle  = () => {
-    console.log(isActive);
     setActive(!isActive);
   }
 
@@ -86,12 +84,10 @@ function App() {
       const pseudoFavorites = []
       // Object with key-value of saved items
       const data = response.val();
-      // console.log(data);
 
       // gives separate key and album url value
       for (let key in data) {
         pseudoFavorites.push({key: key, fbInfo: data[key]})
-        // console.log(pseudoFavorites);
       }
       setFavorites(pseudoFavorites);
     })
@@ -109,11 +105,10 @@ function App() {
 
       <main className="wrapper">
 
-        <ul className={isActive ? "favCart" : "hidden"}>
-          <h2 onClick={handleToggle} className="cartRemove">Your Favorites! {removeButton}</h2>
+        <ul className={isActive ? "favCart" : "hidden" }>
+          <h2 onClick={handleToggle} className="cartRemove">Your Favorites! <span>{removeButton}</span></h2>
         {
           favorites.map((favorite, index) => {
-            // console.log(favorite.key);
             return (
               <FBFavs 
                 artFromFB={favorite.fbInfo.art}
@@ -152,7 +147,7 @@ function App() {
       </main>
 
       <footer>
-        <a className="juno" href="https://junocollege.com/">Copyright <span>&#169;</span> 2021 Juno College. Powered by iTunes API.</a>
+        <a className="juno" href="https://junocollege.com/">Copyright<span>&#169;</span>2021 Juno College. Powered by iTunes API.</a>
       </footer>
 
     </div>
