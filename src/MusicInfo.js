@@ -5,6 +5,7 @@ import { faApple } from '@fortawesome/free-brands-svg-icons'
 function MusicInfo ({albumArt, albumName, tracks, year, artist, artistURL, indexNumber, appleMusic, indexFunction}) {
     const fullStar = <FontAwesomeIcon icon={faStar} /> 
     const apple = <FontAwesomeIcon icon={faApple} />
+    
 
     return (
         <li className="albumContainer">
